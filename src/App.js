@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Person from './Person/Person'
+import Person from './Person/Person';
 
 class App extends Component {
   state = {
@@ -33,11 +33,22 @@ class App extends Component {
   }
 
   render() {
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer'
+    };
+    // this is inline styling (adding hover effects here are pretty tough) which is scoped to the element we are working with, unlike creating css files which are global no matter their location
+
     return (
       <div className="App">
         <h1>Hi, I'm React App!!!</h1>
         <p>This is really working!</p>
-        <button onClick={() => this.switchNameHandler( 'Maximilian')}>Switch Name</button>
+        <button
+          style={style}
+          onClick={() => this.switchNameHandler( 'Maximilian')}>Switch Name</button>
         <Person
           name={this.state.persons[0].name}
           age={this.state.persons[0].age} />
