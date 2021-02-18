@@ -13,16 +13,6 @@ class App extends Component {
     showPersons: false
   }
 
-  switchNameHandler = (newName) => {
-    this.setState({
-      persons : [
-        { name: newName, age: 28 },
-        { name: 'Manu', age: 29 },
-        { name: 'Stephanie', age: 26 }
-      ]
-    })
-  }
-
   nameChangedHandler = (event) => {
     this.setState({
       persons : [
@@ -31,6 +21,16 @@ class App extends Component {
         { name: 'Stephanie', age: 26 }
       ]
     })
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons;
+    // bad practice because the splice line is then adding changes to the original value and updating it would mean mutating the original value which can lead to unpredictible behaviour. using splice instead would make sure that this persons is a copy and the not the original value. making changes to it and then setting new state would set the value of persons to a completely new array.
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons]; // ES 6 version of above
+    persons.splice(personIndex, 1);
+    // here we aren't changing the value of persons which is a const: since persons is an array and arrays are reference types that merely store a pointer to the location where the value is stored, we are technically only changing the value and not the stored pointer.
+    this.setState({persons: persons});
   }
 
   togglePersonsHandler = () => {
@@ -51,17 +51,12 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age} />
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, 'Max!')}
-            changed={this.nameChangedHandler}>My Hobbies: Reading</Person>
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age} />
+          {this.state.persons.map((person, index) => {
+            return <Person
+            click={() => this.deletePersonHandler(index)}
+            name={person.name}
+            age={person.age} />
+          })}
         </div>
       );
     }
